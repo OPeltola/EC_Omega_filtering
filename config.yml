@@ -1,0 +1,106 @@
+
+sites: ['US-MRf','CH-Dav','DE-Hai','DE-HoH','FI-Hyy','FR-Aur','FR-Bil','FR-Fon',
+    'IT-SR2','SE-Deg','SE-Htm','SE-Nor','SE-Svb','FI-Ken','FI-Sod','FI-Jok',
+    'BARR','BART','CPER','DCFS','DELA','DSNY','GUAN','HARV','HEAL',
+    'JERC','JORN','KONA','KONZ','LAJA','MOAB','NIWO','NOGP','OAES','ONAQ',
+    'ORNL','OSBS','SCBI','SERC','SRER','STEI','STER','TOOL','UNDE','WOOD']
+    
+source:
+  US-MRf: 'PI'
+  CH-Dav: 'ICOS'
+  DE-Hai: 'ICOS'
+  DE-HoH: 'ICOS'
+  FI-Hyy: 'ICOS'
+  FR-Aur: 'ICOS'
+  FR-Bil: 'ICOS'
+  FR-Fon: 'ICOS'
+  IT-SR2: 'ICOS'
+  SE-Deg: 'ICOS'
+  SE-Htm: 'ICOS'
+  SE-Nor: 'ICOS'
+  SE-Svb: 'ICOS'
+  FI-Ken: 'PI'
+  FI-Sod: 'PI'
+  FI-Jok: 'PI'
+  BARR: 'NEON'
+  BART: 'NEON'
+  CPER: 'NEON'
+  DCFS: 'NEON'
+  DELA: 'NEON'
+  DSNY: 'NEON'
+  GUAN: 'NEON'
+  HARV: 'NEON'
+  HEAL: 'NEON'
+  JERC: 'NEON'
+  JORN: 'NEON'
+  KONA: 'NEON'
+  KONZ: 'NEON'
+  LAJA: 'NEON'
+  MOAB: 'NEON'
+  NIWO: 'NEON'
+  NOGP: 'NEON'
+  OAES: 'NEON'
+  ONAQ: 'NEON'
+  ORNL: 'NEON'
+  OSBS: 'NEON'
+  SCBI: 'NEON'
+  SERC: 'NEON'
+  SRER: 'NEON'
+  STEI: 'NEON'
+  STER: 'NEON'
+  TOOL: 'NEON'
+  UNDE: 'NEON'
+  WOOD: 'NEON'
+
+
+LAI_estimate: 'LAI_Warren_up'
+
+
+# LAI from literature
+LAI:
+  CH-Dav: 3.9 # ICOS station labeling report
+  DE-Hai: 5
+  FR-Bil: 1.5 # ICOS station labeling report
+  FR-Fon: 5.5
+  IT-SR2: 2.5 # ICOS station labeling report
+  DE-HoH: 6 # https://bg.copernicus.org/articles/16/1111/2019/
+  FI-Hyy: 3.6 # https://bg.copernicus.org/articles/5/1625/2008/
+  SE-Htm: 4 # https://royalsocietypublishing.org/doi/suppl/10.1098/rstb.2019.0516
+  SE-Htm: 4.4 # https://royalsocietypublishing.org/doi/suppl/10.1098/rstb.2019.0516
+  SE-Nor: 6.75 # https://bg.copernicus.org/articles/5/1625/2008/
+  SE-Nor: 2.7 # https://royalsocietypublishing.org/doi/suppl/10.1098/rstb.2019.0516
+  SE-Svb: 3.3 # https://royalsocietypublishing.org/doi/suppl/10.1098/rstb.2019.0516
+  US-MRf: 9.4 # https://www.sciencedirect.com/science/article/pii/S0168192313000051
+  FI-Ken: 1.9
+  FI-Sod: 1.2
+
+# canopy height from literature
+canz:
+  BE-Lon: 0
+  DE-Gri: 0
+  DE-Kli: 0
+  DE-RuS: 0
+  FI-Kmp: 0
+  FI-Let: 0
+  FI-Sii: 0
+  FI-Var: 0
+  FR-EM2: 0
+  FR-LGt: 0
+  IT-Tor: 0
+  CH-Dav: 27 #  ICOS station labeling report
+  DE-Hai: 35 #  ICOS station labeling report
+  FR-Aur: 0
+  FR-Bil: 9.4 #  ICOS station labeling report
+  FR-Fon: 25 #  https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.13771
+  IT-SR2: 18 #  https://doi.org/10.1016/j.soilbio.2015.05.017 and https://bg.copernicus.org/articles/17/1583/2020/
+  SE-Deg: 0
+  DE-HoH: 33 # https://bg.copernicus.org/articles/16/1111/2019/
+  # DE-HoH: 28 # https://bg.copernicus.org/articles/16/1111/2019/
+  FI-Hyy: 21 # https://bg.copernicus.org/articles/5/1625/2008/
+  SE-Htm: 18 # https://www.icos-sweden.se/hyltemossa
+  SE-Nor: 28 # https://bg.copernicus.org/articles/5/1625/2008/
+  SE-Svb: 20 # https://royalsocietypublishing.org/doi/suppl/10.1098/rstb.2019.0516
+  FI-Jok: 0 # https://royalsocietypublishing.org/doi/suppl/10.1098/rstb.2019.0516
+  US-MRf: 28 # https://www.sciencedirect.com/science/article/pii/S0168192313000051
+  FI-Ken: 14.5
+  FI-Sod: 12
