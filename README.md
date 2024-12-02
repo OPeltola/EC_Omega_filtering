@@ -7,7 +7,7 @@ pip install -r requirements.txt
 ```
 ## Usage
 ### Reproducing figures
-You can reproduce the figures shown in the manuscript by downloading the data from Zenodo repository () and then by running
+You can reproduce the figures shown in the manuscript by downloading the data from Zenodo repository (<https://doi.org/10.5281/zenodo.14259134>) and then by running
 ```Shell
 python plot_figures.py
 ```
