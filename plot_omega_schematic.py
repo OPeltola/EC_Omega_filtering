@@ -14,10 +14,16 @@ var='a'
 al = []
 al = [(chr(ord(var)+i)) for i in range(26)]
 
-OMEGAth = 0.66
-OMEGAth_std = 0.06
-OMEGAth_skewness = 0.52
-OMEGAth_quantiles = [0.59,0.61,0.63,0.64,0.65,0.67,0.69,0.71,0.73]
+# OMEGAth = 0.66
+# OMEGAth_std = 0.06
+# OMEGAth_skewness = 0.52
+# OMEGAth_quantiles = [0.59,0.61,0.63,0.64,0.65,0.67,0.69,0.71,0.73]
+
+OMEGAth = 0.59
+OMEGAth_iqr = [0.50,0.63]
+OMEGAth_std = 0.10
+OMEGAth_skewness = 0.35
+OMEGAth_quantiles = [0.44,0.49,0.51,0.56,0.59,0.60,0.62,0.64,0.68]
 config_file = 'config.yml'
 config = iotools.load_config(config_file)   
 

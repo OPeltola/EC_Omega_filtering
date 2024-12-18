@@ -23,14 +23,20 @@ var='a'
 al = []
 al = [(chr(ord(var)+i)) for i in range(26)]
 
-OMEGAth = 0.66
-OMEGAth_std = 0.06
-OMEGAth_skewness = 0.52
-OMEGAth_quantiles = [0.59,0.61,0.63,0.64,0.65,0.67,0.69,0.71,0.73]
+# OMEGAth = 0.66
+# OMEGAth_std = 0.06
+# OMEGAth_skewness = 0.52
+# OMEGAth_quantiles = [0.59,0.61,0.63,0.64,0.65,0.67,0.69,0.71,0.73]
+
+OMEGAth = 0.59
+OMEGAth_iqr = [0.50,0.63]
+OMEGAth_std = 0.10
+OMEGAth_skewness = 0.35
+OMEGAth_quantiles = [0.44,0.49,0.51,0.56,0.59,0.60,0.62,0.64,0.68]
 config_file = 'config.yml'
 config = iotools.load_config(config_file)   
 
-figfold = os.path.join(os.getcwd(),'figs_after_2nd_review')
+figfold = os.path.join(os.getcwd(),'figs')
 if not os.path.isdir(figfold):
     try:
         os.mkdir(figfold)
@@ -46,6 +52,9 @@ figsize3 = [18,8]
 
 def fig3_4_5(data,clrs,sites=None):
 
+
+    p0 = [0.6,0.02,1]
+    bounds = ([0.02,-0.1,0.5],[1.5,1,np.Inf])
 
     if sites is None:
         sites = list(data.keys())
@@ -167,16 +176,21 @@ def fig3_4_5(data,clrs,sites=None):
 
     xvar = 'OMEGA'
     omth1 = pd.DataFrame(index=FCbinned.keys(),columns=['val','unc'])
+    coefs = pd.DataFrame(index=FCbinned.keys(),columns=[0,1,2])
+    coefs2 = pd.DataFrame(index=FCbinned.keys(),columns=[0,1,2])
     for key in FCbinned[xvar].keys():
         # print(key)
         indx = FCbinned[xvar][key].index[~FCbinned[xvar][key].isnull()].astype(int).to_numpy()
         x = bins[xvar][0:-1]+(bins[xvar][1]-bins[xvar][0])/2
         if len(indx)>4:
             # coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],FCbinned[xvar][key].to_numpy()[indx],p0=[0.6,1,1,0],bounds=([0.2,0.7,0,0],[0.8,1.3,30,10]))
-            coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],FCbinned[xvar][key].to_numpy()[indx],p0=[0.6,1,1],bounds=([0.02,0,0.8],[1,10,1.2]),nan_policy='omit')
+            coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],FCbinned[xvar][key].to_numpy()[indx],p0=p0,bounds=bounds,nan_policy='omit')
             # coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],FCbinned[xvar][key].to_numpy()[indx],p0=[0.1,1,1,0],bounds=([0.03,0.7,0,0],[0.8,1.3,30,10]))
             omth1.loc[key,'val'] = coef[0]
             omth1.loc[key,'unc'] = e[0,0]
+            coefs.loc[key,0] = coef[0]
+            coefs.loc[key,1] = coef[1]
+            coefs.loc[key,2] = coef[2]
         else:
             omth1.loc[key,'val'] = np.nan
             omth1.loc[key,'unc'] = np.nan
@@ -188,13 +202,29 @@ def fig3_4_5(data,clrs,sites=None):
         x = bins[xvar][0:-1]+(bins[xvar][1]-bins[xvar][0])/2
         if len(indx)>4:
             # coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],FCbinned[xvar][key].to_numpy()[indx],p0=[0.6,1,1,0],bounds=([0.2,0.7,0,0],[0.8,1.3,30,10]))
-            coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],NEEbinned[xvar][key].to_numpy()[indx],p0=[0.6,1,1],bounds=([0.02,0,0.8],[1,10,1.2]),nan_policy='omit')
+            coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],NEEbinned[xvar][key].to_numpy()[indx],p0=p0,bounds=bounds,nan_policy='omit')
             # coef,e = optimize.curve_fit(utils.piecewise_linear, x[indx],FCbinned[xvar][key].to_numpy()[indx],p0=[0.1,1,1,0],bounds=([0.03,0.7,0,0],[0.8,1.3,30,10]))
             omth2.loc[key,'val'] = coef[0]
             omth2.loc[key,'unc'] = e[0,0]
+            coefs2.loc[key,0] = coef[0]
+            coefs2.loc[key,1] = coef[1]
+            coefs2.loc[key,2] = coef[2]
         else:
             omth2.loc[key,'val'] = np.nan
             omth2.loc[key,'unc'] = np.nan
+        # fig3, axs3 = plt.subplot_mosaic([[key]])
+        # axs3[key].plot(x,NEEbinned[xvar][key].to_numpy(),'b.')
+        # axs3[key].plot(x,FCbinned[xvar][key].to_numpy(),'r.')
+        # if key in coefs2.index:
+        #     axs3[key].plot(np.linspace(0,2,100),utils.piecewise_linear(np.linspace(0,2,100), coefs2.loc[key,0], coefs2.loc[key,1], coefs2.loc[key,2]),'b-')
+        #     axs3[key].plot([coefs2.loc[key,0],coefs2.loc[key,0]],[0,1.4],'b:')
+        # if key in coefs.index:
+        #     axs3[key].plot(np.linspace(0,2,100),utils.piecewise_linear(np.linspace(0,2,100), coefs.loc[key,0], coefs.loc[key,1], coefs.loc[key,2]),'r-')
+        #     axs3[key].plot([coefs.loc[key,0],coefs.loc[key,0]],[0,1.4],'r:')
+        # axs3[key].plot([OMEGAth,OMEGAth],[0,1.4],'k:')
+        # axs3[key].set_title(key+' '+str(omth1.loc[key,'val'])+' '+str(omth2.loc[key,'val']))
+        # fig3.savefig(figfold+'/' + 'fig3_' + key + '.png', dpi=200,bbox_inches='tight')
+
     # omth_for_plot = omth1.loc[~omth1['val'].isnull(),'val']
     # axs['OMEGA FC'].violinplot([omth_for_plot.to_list()],showmeans=False,showmedians=True,vert=False,positions=[0.2],widths=[0.2],alpha=1)
 
@@ -215,6 +245,7 @@ def fig3_4_5(data,clrs,sites=None):
     n = 1000
     omth = pd.DataFrame(index=np.linspace(0,n-1,n),columns=['val','unc'])
     x = bins[xvar][0:-1]+(bins[xvar][1]-bins[xvar][0])/2
+    coefs3 = pd.DataFrame(index=np.linspace(0,n-1,n),columns=[0,1,2])
     for i in range(n):
         # print(i)
         indx_for_y = np.random.randint(0, high=len(FCbinned[xvar].columns)-1, size=(len(FCbinned[xvar].index),1), dtype=int)
@@ -226,7 +257,10 @@ def fig3_4_5(data,clrs,sites=None):
             y = y.astype(float).to_numpy()
             # coef,e = optimize.curve_fit(utils.piecewise_linear, x,y,p0=[0.6,1,1,0],bounds=([0.1,0.5,0,0],[0.9,1.5,30,10]),nan_policy='omit')
             # coef,e = optimize.curve_fit(utils.piecewise_linear, x,y,p0=[0.6,1,1,0],bounds=([0.02,0,0,0],[1,10,30,10]),nan_policy='omit')
-            coef,e = optimize.curve_fit(utils.piecewise_linear, x,y,p0=[0.6,1,1],bounds=([0,0,0.8],[1,10,1.2]),nan_policy='omit')
+            coef,e = optimize.curve_fit(utils.piecewise_linear, x,y,p0=p0,bounds=bounds,nan_policy='omit')
+            coefs3.loc[i,0] = coef[0]
+            coefs3.loc[i,1] = coef[1]
+            coefs3.loc[i,2] = coef[2]
             # coef,e = optimize.curve_fit(utils.piecewise_linear, x,y,nan_policy='omit')
             omth.loc[i,'val'] = coef[0]
             omth.loc[i,'unc'] = e[0,0]**0.5
@@ -325,7 +359,8 @@ def fig3_4_5(data,clrs,sites=None):
     pos2.x1 = pos2.x0+pos.x1-pos.x0
     ax3["cb2"].set_position(pos2)
     fig3.set_size_inches(figsize2[0]*cm, figsize2[1]*cm,forward=True)
-    ax3["A"].fill_between([-10,omth1["z"].max()+10],[OMEGAth-OMEGAth_std,OMEGAth-OMEGAth_std],[OMEGAth+OMEGAth_std,OMEGAth+OMEGAth_std], linewidth=0,color=[0.8,0.8,0.8])
+    # ax3["A"].fill_between([-10,omth1["z"].max()+10],[OMEGAth-OMEGAth_std,OMEGAth-OMEGAth_std],[OMEGAth+OMEGAth_std,OMEGAth+OMEGAth_std], linewidth=0,color=[0.8,0.8,0.8])
+    ax3["A"].fill_between([-10,omth1["z"].max()+10],[OMEGAth_iqr[0],OMEGAth_iqr[0]],[OMEGAth_iqr[1],OMEGAth_iqr[1]], linewidth=0,color=[0.8,0.8,0.8])
     ax3["A"].plot([0,omth1["z"].max()+10],[OMEGAth,OMEGAth],'k--',label="$\Omega_{th}$="+f"{OMEGAth:.2f}")
     # ax3["A"].errorbar(omth2["z"],omth2["val"],color="r",yerr=omth2["unc"],marker="^",linestyle="none",markerfacecolor="w",label="$F_c+S_c$")
     # ax3["A"].errorbar(omth1["z"],omth1["val"],color="k",yerr=omth1["unc"],marker="o",linestyle="none",markerfacecolor="w",label="$F_c$")
@@ -340,10 +375,10 @@ def fig3_4_5(data,clrs,sites=None):
     cb.set_ticks([])
     cb2.set_label('PAI maximum (m$^2$ m$^{-2}$)')
     ax3["A"].set_xlim([0,omth1["z"].max()+2])
-    ax3["A"].set_ylim([0,omth1["val"].max()+0.05])
+    ax3["A"].set_ylim([0,np.max([omth1["val"].max(),omth2["val"].max()])+0.05])
     ax3["A"].set_ylabel("$\Omega$ threshold (-)")
     ax3["A"].set_xlabel("EC measurement height (m)")
-    ax3["A"].legend(loc="lower left")
+    ax3["A"].legend(loc="upper right")
     # plt.show()
     
     fig.savefig(figfold+'/fig3.png', dpi=200,bbox_inches='tight')
@@ -925,7 +960,7 @@ def figC15(data,clrs,forest_site,grass_site):
 
         if site!=grass_site:
             ax[site].set_xlabel('Fraction of data (%)')
-            ax[site].legend()
+            ax[site].legend(loc='upper left')
         else:
             ax[site].set_xticklabels([])
 
@@ -1453,6 +1488,9 @@ def main():
         for var in ['FC','NEE']:
             USTARth[var][site] = iotools.load_ONEflux_threshold(os.path.join(os.getcwd(),'data'),site,var)
 
+        datain['OMEGA_FLAG'] = 0
+        datain.loc[(pd.isnull(datain['USTAR'])) | (pd.isnull(datain['OMEGA'])),'OMEGA_FLAG'] = np.nan
+        datain.loc[datain['OMEGA']<OMEGAth,'OMEGA_FLAG'] = 1
         if not datain.empty:
             data_all[site] = datain
             clrs[site] = utils.define_colors(datain.loc[datain.index[0],'z'])

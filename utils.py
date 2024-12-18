@@ -47,8 +47,8 @@ def NEON_to_ameriflux(neon_id):
 
     return id_out
 
-def piecewise_linear(x, x0, y0, k1):
-    return np.piecewise(x, [x < x0], [lambda x:k1*x + y0-k1*x0, lambda x:y0])
+def piecewise_linear(x, x1, y0, y1):
+    return np.piecewise(x, [x < x1], [lambda x:(y1-y0)/x1*x + y0, lambda x:y1])
 
 
 def calculate_MCC(obs,pred):
