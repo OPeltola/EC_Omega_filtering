@@ -1,5 +1,5 @@
 # EC_Omega_filtering
-These codes can be used to reproduce the results presented in Peltola et al. (2025): "Towards an enhanced metric for detecting vertical flow decoupling in eddy covariance flux observations" submitted to Agricultural and Forest Meteorology.
+These codes can be used to reproduce the results presented in Peltola et al. (2025): "Towards an enhanced metric for detecting vertical flow decoupling in eddy covariance flux observations" published in Agricultural and Forest Meteorology.
 ## Installation
 The codes have been run under Windows OS with Python 3.11.6. Install the required Python packages by running 
 ```Shell
@@ -26,4 +26,5 @@ python example_omega_calculation.py
 
 
 ## Citing
-If you are using this codebase, please cite:
+If you are using this codebase, please cite: Peltola, O., Aslan, T., Aurela, M., Lohila, A., Mammarella, I., Papale, D., Thomas, C.K., Vesala, T., Laurila, T., 2025. Towards an enhanced metric for detecting vertical flow decoupling in eddy covariance flux observations. Agricultural and Forest Meteorology 362, 110326. https://doi.org/10.1016/j.agrformet.2024.110326
+
